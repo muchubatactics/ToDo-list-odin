@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;700;900&display=swap');
+
+body {
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+    /* overflow-y: hidden ; */
+
+}
+
+:root {
+    font-size: calc(1vh + 1vw);
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.head {
+    background-color: green;
+    font-size: 1rem;
+    padding: 10px;
+    padding-left: 20px;
+    color: white;
+}
+
+.foot {
+    margin-top: auto;
+    font-size: 0.5rem;
+    text-align: center;
+    background-color: green;
+    padding: 5px;
+    color: white;
+}
+
+.mid {
+    flex: 1 1 0;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+
+}
+
+.tasks {
+    padding-left: 2rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.lists {
+    padding-top: 1rem;
+    border-left: 1px solid gray; 
+    padding-left: 1rem;
+}
+
+.actual {
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+}
+
+/* .emp {
+    font-size: 1.5rem;
+} */
+
+.heading {
+    text-transform: capitalize;
+    font-weight: 900;
+}
+
+.add-button {
+    margin-top: auto;
+    padding-bottom: 10px;
+    display: flex;
+    width: 80%;
+}
+
+.add-button > div {
+    margin-left: auto;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 5px;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-button svg {
+    height: 1rem;
+    width: 1rem;
+    fill: white;
+}
+
+.task {
+    background-color: rgb(223, 223, 223) ;
+    width: 70%;
+    border-radius: 10px;
+    height: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.task-title {
+    justify-self: left;
+}
+
+.list {
+    background-color:rgb(238, 238, 238);
+    width: 80%;
+    display: grid;
+    font-size: 0.9rem;
+    grid-template-columns: 1fr 90fr;
+    margin-bottom: 10px;
+    column-gap: 10px;
+    height: 2rem;
+}
+
+.selected {
+    background-color: rgb(211, 211, 211);
+
+}
+
+.selected div:nth-child(1) {
+    background-color: green;
+}
+
+.selected div:nth-child(2) {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.list div:nth-child(2) {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.expanded-task {
+    background-color: rgb(223, 223, 223) ;
+    width: 70%;
+    border-radius: 10px;
+    padding-top: 0.7rem;
+    padding-bottom: 1rem;
+}
+
+.expanded-task > .top {
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    
+}
+
+.expanded-task > .exp-body {
+    padding-left: 1rem;
+}
+
+.list-name {
+    font-size: 0.5rem;
+    font-weight: 600;
+    color: green;
+}
+
+
+.exp-title {
+    margin: 0.5rem 0px;
+}
+
+.details, .time-date, .sub-tasks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.details > span, .time-date > span, .sub-tasks > span {
+    font-size: 0.7rem;
+    margin-left: 15px;
+}
+
+.create-task {
+    margin-top: auto;
+    background-color: rgb(223, 223, 223) ;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 70%;
+}
+
+.create-task > form {
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+}
+
+.create-task  input {
+    background-color: rgb(223, 223, 223) ;
+    border: 0px;
+    width: 70%;
+}
+
+.create-task input:focus {
+    outline: none;
+}
+
+.create-task .btm {
+    display: flex;
+    width: 95%;
+    margin: 15px 0px;
+    
+}
+.create-task .btm img {
+    margin-right: 10px;
+}
+
+.create-task button {
+    border: 0px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background-color: rgb(223, 223, 223) ;
+    color: green;
+    margin-left: auto;
+}
+
+#tnam {
+    font-size: 0.8rem
+}
+
+#tdetail {
+    font-size: 0.6rem;
+}
+
+.show-date {
+    font-size: 0.6rem;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    width: 4rem;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.del-svg {
+    /* fill: red; */
+}
+
+.complete {
+    margin-top: 1rem;
+    border-top: 1px solid gray;
+    padding-top: 5px;
+    width: 70%;
+}
+
+.complete > .top {
+    font-size: 0.8rem;
+    display: flex;
+}
+
+.complete > .top > img {
+    margin-left: auto;
+}
+
+.complete .midd {
+    margin-top: 10px;
+    width: 98%;
+}
+
+.complete-task img {
+    margin-right: 1rem;
+}
+
+.complete-task {
+    display: flex;
+    background-color: rgb(223, 223, 223) ;
+    border-radius: 5px;
+    width: 100%;
+    padding-left: 0.5rem;
+    font-size: 0.7rem;
+    height: 1.4rem;
+    align-items: center;
+
+}
+
+.complete-title {
+    text-decoration: line-through;
+}
