@@ -2,7 +2,8 @@
 import './style.css';
 import List from './list.js';
 import Task from './task.js'
-
+import { selectList } from './list.js';
+import { getSelectedList } from './list.js';
 
 // ---dom
 //lists
@@ -19,6 +20,8 @@ let listFunctionality = function(){
                     node.classList.remove('selected');
                 });
                 this.classList.add("selected");
+                selectList(this);
+                renderTasksFromSelectedList();
             }
         }
     };  
@@ -86,6 +89,8 @@ let taskFunctionality = function(){
         
         //
         let newTask = Task(document.getElementById('tnam').value, document.getElementById('tdetail').value, '');
+        newTask.listName = getSelectedList().name;
+        getSelectedList().tasks.push(newTask);
         domMethods.makeTaskDOM(newTask);
 
 
@@ -173,6 +178,13 @@ let domMethods = function(){
         list.nodeRef = newList;
     }
 
+    function selectListDOM(list)
+    {
+        //use only in initialize
+        list.selected = true;
+        list.nodeRef.classList.add('selected');
+    }
+
     function initialize()
     {
         let importantList = List('Important');
@@ -183,6 +195,26 @@ let domMethods = function(){
         defaultList.makeList();
         domMethods.makeListDOM(defaultList);
 
+        selectListDOM(defaultList);
+
+    }
+
+    function clearRenderedTasks()
+    {
+        Array.from(document.querySelectorAll('.task')).forEach((task) => {
+            task.remove();
+        })
+        Array.from(document.querySelectorAll('.expanded-task')).forEach((task) => {
+            task.remove();
+        })
+    }
+
+    function renderTasksFromSelectedList()
+    {
+        clearRenderedTasks();
+        getSelectedList().tasks.forEach((task) => {
+            makeTaskDOM(task);
+        });
     }
 
     function expandTaskDOM()
@@ -196,7 +228,7 @@ let domMethods = function(){
     }
 
     return {
-        makeListDOM, makeTaskDOM, initialize, 
+        makeListDOM, makeTaskDOM, initialize, renderTasksFromSelectedList,
     };
 }();
 

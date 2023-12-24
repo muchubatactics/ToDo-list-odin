@@ -38,6 +38,7 @@ export default function(name, details, dueDate)
         name,
         details,
         dueDate,
+        listName: '',
         expandTask,
         minimizeTask,
         deleteTask,
