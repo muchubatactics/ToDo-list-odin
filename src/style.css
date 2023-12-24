@@ -8,6 +8,11 @@ body {
 
 }
 
+svg {
+    height: 0.8rem;
+    width: auto;
+}
+
 :root {
     font-size: calc(1vh + 1vw);
     font-family: 'Inter', sans-serif;
@@ -26,6 +31,10 @@ body {
     padding-left: 20px;
     color: white;
     font-family: 'Playfair Display';
+    position: sticky;
+    top: 0px;
+
+
 }
 
 .foot {
@@ -225,19 +234,27 @@ body {
     display: flex;
     width: 95%;
     margin: 15px 0px;
-    
+    align-items: center;
 }
-.create-task .btm img {
+.create-task .btm svg {
     margin-right: 10px;
 }
 
-.create-task button {
+.create-task .btm div {
+    
+    margin-left: auto;
+}
+
+.btm div button {
     border: 0px;
     font-size: 0.7rem;
     font-weight: 600;
     background-color: rgb(223, 223, 223) ;
     color: green;
-    margin-left: auto;
+}
+
+.btm div .cancel {
+    color: red;
 }
 
 #tnam {
@@ -258,9 +275,6 @@ body {
     margin: 10px 0px;
 }
 
-.del-svg {
-    /* fill: red; */
-}
 
 .complete {
     margin-top: 1rem;
@@ -274,8 +288,9 @@ body {
     display: flex;
 }
 
-.complete > .top > img {
+.complete > .top > svg {
     margin-left: auto;
+    margin-bottom: 20px;
 }
 
 .complete .midd {
@@ -283,7 +298,7 @@ body {
     width: 98%;
 }
 
-.complete-task img {
+.complete-task svg {
     margin-right: 1rem;
 }
 
@@ -371,3 +386,33 @@ body {
     margin-right: 15px;
     color: red;
 }
+
+.task:hover {
+    background-color: rgb(187, 187, 187);
+
+}
+
+.important-svg:hover {
+    fill: green;
+}
+
+.add-button div:hover {
+    background-color: rgb(0, 97, 0);
+}
+
+.submt:hover {
+    color: rgb(0, 90, 0);
+}
+
+.cancel:hover {
+    color: rgb(168, 0, 0);
+}
+
+.complete .top svg:hover {
+    fill: green;
+}
+
+.hide {
+    display: none;
+}
+

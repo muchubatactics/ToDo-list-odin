@@ -45,3 +45,46 @@ createListCancel.addEventListener("click", (event) => {
 
 //tasks
 
+//button
+let addTaskButton = document.querySelector(".add-button div");
+let createTaskDiv = document.querySelector(".create-task");
+addTaskButton.onclick = function(){
+    if(createTaskDiv.hasAttribute('hidden'))
+    {
+        createTaskDiv.removeAttribute('hidden');
+        window.scrollTo(0, document.body.scrollHeight);
+    } 
+
+};
+
+let createTaskForm = document.querySelector(".create-task form");
+createTaskForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    createTaskDiv.setAttribute('hidden', 'hidden');
+    createTaskForm.reset();
+});
+
+let createTaskCancel = document.querySelector(".create-task .cancel");
+createTaskCancel.addEventListener('click', (event) => {
+    event.preventDefault();
+    createTaskDiv.setAttribute('hidden', 'hidden');
+    createTaskForm.reset();
+
+});
+
+//complete
+let expandButton = document.querySelector(".expand");
+let minimizeButton = document.querySelector(".minimize");
+let completeDiv = document.querySelector(".complete .midd");
+expandButton.onclick = function(){
+    expandButton.classList.add('hide');
+    minimizeButton.classList.remove('hide');
+    completeDiv.classList.remove('hide');
+};
+minimizeButton.onclick = function(){
+    minimizeButton.classList.add('hide');
+    expandButton.classList.remove('hide');
+    completeDiv.classList.add('hide');
+};
+
+//expanding
