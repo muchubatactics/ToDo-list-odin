@@ -11,7 +11,7 @@ function Task(name)
     {
         lists.push(this);
     }
-    
+
     return {
         name,
         selected: false,
@@ -29,7 +29,6 @@ export function selectList(nodeRef){
         if(lists[i].nodeRef == nodeRef)
         {
             lists[i].selected = true;
-            console.log(lists[i]);
         }
         else
         {
@@ -37,13 +36,18 @@ export function selectList(nodeRef){
         }
     }
 
-    console.log(lists)
 };
 
 export function getSelectedList(){
+    let retList;
     lists.forEach((list) => {
-        if(list.selected) return list;
+        if(list.selected)
+        {
+            retList = list;
+        }
     });
+
+    return retList;
 }
 
 export default Task;

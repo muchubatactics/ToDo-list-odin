@@ -1,6 +1,8 @@
 let tasksArray = [];
 let completeTasksArray = [];
 
+import { getSelectedList } from "./list";
+
 export default function(name, details, dueDate)
 {
 
@@ -31,7 +33,7 @@ export default function(name, details, dueDate)
 
     function makeTask()
     {
-
+        tasksArray.push(this);
     }
 
     return {
@@ -48,3 +50,13 @@ export default function(name, details, dueDate)
         nodeRef: null,
     };
 }
+
+export function getTaskFromNode(nodeRef){
+    for(let i = 0; i < tasksArray.length; i++)
+    {
+        if(tasksArray[i].nodeRef == nodeRef && tasksArray[i].listName == getSelectedList().name)
+        {
+            return tasksArray[i];
+        }
+    }
+};

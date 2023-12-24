@@ -420,3 +420,6 @@ svg {
     fill: green;
 }
 
+.back:hover {
+    fill: red;
+}
