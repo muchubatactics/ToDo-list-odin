@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Small ToDo</title>
     <link rel="stylesheet" href="./style.css">
+    <script src="./index.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -124,6 +125,15 @@
                         <div>
                             Grocery list
                         </div>
+                    </div>
+                    <div class="create-list-button">
+                        <img src="../assets/add_FILL0_wght400_GRAD0_opsz24.svg" alt=""> New list
+                    </div>
+                    <div class="create-list" hidden="hidden">
+                        <form action="">
+                            <input type="text" name="lname" id="lnam" placeholder="New list">
+                            <div><button type="submit" class="submt">Save</button><button class="cancel">Cancel</button></div>
+                        </form>
                     </div>
                 </div>
             </div>
