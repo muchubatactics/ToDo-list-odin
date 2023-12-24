@@ -416,3 +416,7 @@ svg {
     display: none;
 }
 
+.circle:hover {
+    fill: green;
+}
+
