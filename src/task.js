@@ -1,9 +1,8 @@
 let tasksArray = [];
 let completeTasksArray = [];
 
-import { getSelectedList } from "./list";
 import { deleteTaskFromLists } from "./list";
-import { addTaskToImportantList } from "./list";
+import { addTaskToList } from "./list";
 
 export default function(name, details, dueDate)
 {
@@ -20,7 +19,6 @@ export default function(name, details, dueDate)
 
     function deleteTask()
     {
-        console.log('here');
         if (this.important)
         {
             deleteTaskFromLists(this.name, 'Important');
@@ -32,7 +30,13 @@ export default function(name, details, dueDate)
     function makeImportant()
     {
         this.important = true;
-        addTaskToImportantList(this);
+        addTaskToList(this, 'Important');
+    }
+
+    function removeImportance()
+    {
+        this.important = false;
+        deleteTaskFromLists(this.name, 'Important');
     }
 
     function completeTask()
@@ -58,6 +62,7 @@ export default function(name, details, dueDate)
         makeTask,
         nodeRef: null,
         important: false,
+        removeImportance,
     };
 }
 

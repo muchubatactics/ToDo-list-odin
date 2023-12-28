@@ -70,14 +70,13 @@ export function deleteTaskFromLists(taskName, listName)
 
 }
 
-export function addTaskToImportantList(task)
+export function addTaskToList(task, listName)
 {
-    for(let i = 0; i < lists.length; ++i)
+    for (let i = 0; i < lists.length; ++i)
     {
-        if(lists[i].name == 'Important')
+        if (lists[i].name == listName)
         {
             lists[i].tasks.push(task);
         }
     }
 }
-
