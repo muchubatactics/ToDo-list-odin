@@ -6,6 +6,10 @@ import { addTaskToList } from "./list";
 
 export default function(name, details, dueDate)
 {
+    function Completed(name)
+    {
+        return {name};
+    }
 
     function expandTask()
     {
@@ -41,7 +45,7 @@ export default function(name, details, dueDate)
 
     function completeTask()
     {
-        completeTasksArray.push(this);
+        completeTasksArray.push(Completed(this.name));
         this.nodeRef = null;
         this.deleteTask();
     }
