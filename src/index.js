@@ -94,10 +94,20 @@ let domMethods = function(){
     {
         let newTask = document.createElement('div');
         newTask.classList.add('task');
+        let date = ''; 
+        if(task.dueDate)
+        {
+            date = task.getFormattedDate();
+            newTask.classList.add('incl-date');
+        }
+
         if (task.important)
         {
             newTask.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-            <div class="task-title">${task.name}</div>
+            <div class="norm-task-top">
+                <div class="task-title">${task.name}</div>
+                <div class="${date ? 'show-date formatted deadline-soon' : ''}">${date}</div>
+            </div>
             <svg class="important-svg add-importance" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"/></svg>
             <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
             `;
@@ -105,7 +115,10 @@ let domMethods = function(){
         else
         {
             newTask.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-            <div class="task-title">${task.name}</div>
+            <div class="norm-task-top">
+                <div class="task-title">${task.name}</div>
+                <div class="${date ? 'show-date formatted deadline-soon' : ''}">${date}</div>
+            </div>
             <svg class="important-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"/></svg>
             <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
             `;
@@ -171,8 +184,8 @@ let domMethods = function(){
     function expandTaskDOM(task)
     {
         task.nodeRef.classList.remove('task');
+        task.nodeRef.classList.remove('incl-date');
         task.nodeRef.classList.add('expanded-task');
-
         if (task.important)
         {
             task.nodeRef.innerHTML = `<div class="top">
@@ -190,7 +203,7 @@ let domMethods = function(){
             </div>
             <div class="time-date">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
-                <span>${task.dueDate}</span>
+                <span class="show-date formatted" >${task.getFormattedDate()}</span>
             </div>
             <div class="sub-tasks">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m560-120-57-57 144-143H200v-480h80v400h367L503-544l56-57 241 241-240 240Z"/></svg>
@@ -215,7 +228,7 @@ let domMethods = function(){
             </div>
             <div class="time-date">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
-                <span>${task.dueDate}</span>
+                <span class="show-date formatted" >${task.getFormattedDate()}</span>
             </div>
             <div class="sub-tasks">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m560-120-57-57 144-143H200v-480h80v400h367L503-544l56-57 241 241-240 240Z"/></svg>
@@ -228,16 +241,23 @@ let domMethods = function(){
 
     function minimizeTaskDOM(task, arrow)
     {
-        //UNDERSTAND WHY THIS ISN'T WORKING
-
-        // arrow.parentElement.parentElement.classList.remove('expanded-task');
-        // arrow.parentElement.parentElement.classList.add('task');
         let temp = document.createElement('div');
         temp.classList.add('task');
-        if(task.important)
+
+        let date = ''; 
+        if(task.dueDate)
+        {
+            date = task.getFormattedDate();
+            temp.classList.add('incl-date');
+        }
+
+        if (task.important)
         {
             temp.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-            <div class="task-title">${task.name}</div>
+            <div class="norm-task-top">
+                <div class="task-title">${task.name}</div>
+                <div class="${date ? 'show-date formatted deadline-soon' : ''}">${date}</div>
+            </div>
             <svg class="important-svg add-importance" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"/></svg>
             <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
             `;
@@ -245,14 +265,23 @@ let domMethods = function(){
         else
         {
             temp.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-            <div class="task-title">${task.name}</div>
+            <div class="norm-task-top">
+                <div class="task-title">${task.name}</div>
+                <div class="${date ? 'show-date formatted deadline-soon' : ''}">${date}</div>
+            </div>
             <svg class="important-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"/></svg>
             <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
             `;
         }
+
         arrow.parentElement.parentElement.parentElement.replaceChild(temp, arrow.parentNode.parentNode);
         task.nodeRef = temp;
         taskFunctionality.makeTaskListeners();
+        
+        //UNDERSTAND WHY THIS ISN'T WORKING
+
+        // arrow.parentElement.parentElement.classList.remove('expanded-task');
+        // arrow.parentElement.parentElement.classList.add('task');
         // let temp = arrow;
         // console.log(temp.classList);
         // temp.classList.remove('expanded-task');
@@ -396,8 +425,7 @@ let taskFunctionality = function(){
         let detailValue = document.getElementById('tdetail').value;
         if (detailValue == '') detailValue = 'No Details';
         let newTask = Task(document.getElementById('tnam').value, detailValue, 'No Due date');
-        
-        console.log(domMethods.defaultList);
+        newTask.dueDate = document.getElementById('tduedate').value;
         
         if (document.querySelector('.btm > .important-svg').classList.contains('add-importance'))
         {

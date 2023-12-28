@@ -436,3 +436,19 @@ svg {
 .add-details:hover {
     fill: green;
 }
+
+.formatted {
+    width: auto;
+}
+
+.incl-date {
+    height: 4rem;
+}
+
+.norm-task-top {
+    justify-self: left;
+}
+
+.deadline-soon {
+    border: 1px solid red;
+}

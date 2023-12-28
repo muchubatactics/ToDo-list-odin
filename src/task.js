@@ -49,6 +49,16 @@ export default function(name, details, dueDate)
         tasksArray.push(this);
     }
 
+    function getFormattedDate()
+    {
+        if(this.dueDate == '') return 'No Due Date';
+        let temp = this.dueDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        let date = new Date(Number(temp[1]), Number(temp[2]) - 1, Number(temp[3]));
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${days[date.getDay()]}, ${months[date.getMonth()]} ${temp[3]}`;
+    }
+
     return {
         name,
         details,
@@ -63,6 +73,7 @@ export default function(name, details, dueDate)
         nodeRef: null,
         important: false,
         removeImportance,
+        getFormattedDate,
     };
 }
 
