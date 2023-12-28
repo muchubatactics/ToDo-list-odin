@@ -5,6 +5,7 @@ import Task from './task.js'
 import { selectList } from './list.js';
 import { getSelectedList } from './list.js';
 import { getTaskFromNode } from './task.js';
+import { addTaskToImportantList } from './list.js';
 
 // ---dom
 //lists
@@ -22,6 +23,9 @@ let listFunctionality = function(){
                 });
                 this.classList.add("selected");
                 selectList(this);
+                //
+                taskFunctionality.resetTaskForm();
+                //
                 domMethods.renderTasksFromSelectedList();
             }
         }
@@ -80,35 +84,57 @@ let taskFunctionality = function(){
         {
             createTaskDiv.removeAttribute('hidden');
             window.scrollTo(0, document.body.scrollHeight);
+            if(getSelectedList().name == 'Important')
+            {
+                domMethods.markImportantTaskDOM(document.querySelector('.btm .important-svg'));
+            }
+            makeImportantListeners();
         } 
     
     };
     let createTaskForm = document.querySelector(".create-task form");
     createTaskForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        createTaskDiv.setAttribute('hidden', 'hidden');
-        
+        event.preventDefault();        
         //
         let detailValue = document.getElementById('tdetail').value;
         if (detailValue == '') detailValue = 'No Details';
         let newTask = Task(document.getElementById('tnam').value, detailValue, 'No Due date');
+        
         newTask.listName = getSelectedList().name;
-        getSelectedList().tasks.push(newTask);
+        
+        if (document.querySelector('.btm > .important-svg').classList.contains('add-importance'))
+        {
+            newTask.important = true;
+            addTaskToImportantList(newTask);
+        }
+
+        if(getSelectedList().name != 'Important')
+        {
+            getSelectedList().tasks.push(newTask);
+        }
+        
         newTask.makeTask();
         domMethods.makeTaskDOM(newTask);
 
 
         //
-        createTaskForm.reset();
+        resetTaskForm();    
     });
     
     let createTaskCancel = document.querySelector(".create-task .cancel");
     createTaskCancel.addEventListener('click', (event) => {
         event.preventDefault();
+        resetTaskForm();
+    });
+
+    function resetTaskForm()
+    {
+        let importantButton = document.querySelector('.btm .important-svg');
+        importantButton.classList.remove('add-importance');
+        importantButton.innerHTML = `<path d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"/>`;
         createTaskDiv.setAttribute('hidden', 'hidden');
         createTaskForm.reset();
-    
-    });
+    }
 
     let expandButton = document.querySelector(".expand");
     let minimizeButton = document.querySelector(".minimize");
@@ -134,14 +160,50 @@ let taskFunctionality = function(){
             })
         });
 
+        let markCompleteCircle = document.querySelectorAll('.circle');
+        Array.from(markCompleteCircle).forEach((circle) => {
+            circle.addEventListener('click', (event) => {
+                event.stopPropagation();
+
+                //
+                // domMethods.completeTaskDOM(circle.parentNode);
+            });
+        });
+        makeDeleteListeners();
+        makeImportantListeners();
     }
 
     function makeExpandedListeners()
     {
         let expanded = document.querySelectorAll('.expanded-task');
         Array.from(expanded).forEach((exptask) => {
-            exptask.childNodes[0].childNodes[1].onclick = function(){
+            exptask.childNodes[0].childNodes[1].onclick = function(event){
+                event.stopPropagation();
                 domMethods.minimizeTaskDOM(getTaskFromNode(exptask), this);
+            };
+        });
+        makeDeleteListeners();
+        makeImportantListeners();
+    }
+
+    function makeDeleteListeners()
+    {
+        let deleteButtons = document.querySelectorAll('.del-svg');
+        Array.from(deleteButtons).forEach((button) => {
+            button.onclick = function(event) {
+                event.stopPropagation();
+                domMethods.deleteTaskDOM(this);
+            };
+        });
+    }
+
+    function makeImportantListeners()
+    {
+        let importantButtons = document.querySelectorAll('.important-svg');
+        Array.from(importantButtons).forEach((button) => {
+            button.onclick = function(event) {
+                event.stopPropagation();
+                domMethods.markImportantTaskDOM(this);    
             };
         });
     }
@@ -157,6 +219,7 @@ let taskFunctionality = function(){
         completeDiv,
         makeTaskListeners,
         makeExpandedListeners,
+        resetTaskForm,
 
     };
 }();
@@ -183,11 +246,23 @@ let domMethods = function(){
     {
         let newTask = document.createElement('div');
         newTask.classList.add('task');
-        newTask.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-        <div class="task-title">${task.name}</div>
-        <svg class="important-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"/></svg>
-        <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-        `;
+        if (task.important)
+        {
+            newTask.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+            <div class="task-title">${task.name}</div>
+            <svg class="important-svg add-importance" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"/></svg>
+            <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+            `;
+        }
+        else
+        {
+            newTask.innerHTML = `<svg class="circle" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+            <div class="task-title">${task.name}</div>
+            <svg class="important-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"/></svg>
+            <svg class="del-svg" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+            `;
+        }
+
         task.nodeRef = newTask;
         taskFunctionality.completeDiv.before(newTask);
         taskFunctionality.makeTaskListeners();
@@ -318,8 +393,52 @@ let domMethods = function(){
 
     }
 
+    function completeTaskDOM()
+    {
+
+    }
+
+    function markImportantTaskDOM(button)
+    {
+        button.innerHTML = `<path d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"/>`;
+        button.classList.add('add-importance');
+        
+        if (button.parentElement.classList.contains('btm'))
+        {
+            //
+        }
+        else
+        {
+            if(button.parentElement.classList.contains('task'))
+            {
+                getTaskFromNode(button.parentElement).makeImportant();
+            }
+            else
+            {
+                getTaskFromNode(button.parentElement.parentElement).makeImportant();
+            }
+        }
+        
+
+    }
+
+    function deleteTaskDOM(button)
+    {
+        if(button.parentElement.classList.contains('task'))
+        {
+            getTaskFromNode(button.parentElement).deleteTask();
+            button.parentElement.remove();
+        }
+        else
+        {
+            getTaskFromNode(button.parentElement.parentElement).deleteTask();
+            button.parentElement.parentElement.remove();
+        }
+
+    }
+
     return {
-        makeListDOM, makeTaskDOM, initialize, renderTasksFromSelectedList, expandTaskDOM, minimizeTaskDOM,
+        makeListDOM, makeTaskDOM, initialize, renderTasksFromSelectedList, expandTaskDOM, minimizeTaskDOM, markImportantTaskDOM, deleteTaskDOM,
     };
 }();
 

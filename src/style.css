@@ -423,3 +423,11 @@ svg {
 .back:hover {
     fill: red;
 }
+
+.add-importance {
+    fill: rgb(189, 154, 0);
+}
+
+.add-importance:hover {
+    fill: rgb(189, 154, 0);
+}
