@@ -47,7 +47,7 @@ let listFunctionality = function(){
         createListButton.removeAttribute('hidden');
         
         //
-        let name = document.querySelector(".create-list form input").value;
+        let name = document.querySelector(".create-list form input").value.substring(0, 20);
         let newlist = List(name);
         newlist.makeList();
         domMethods.makeListDOM(newlist);
@@ -444,7 +444,7 @@ let taskFunctionality = function(){
         //
         let detailValue = document.getElementById('tdetail').value;
         if (detailValue == '') detailValue = 'No Details';
-        let newTask = Task(document.getElementById('tnam').value, detailValue, 'No Due date');
+        let newTask = Task(document.getElementById('tnam').value.substring(0, 40), detailValue, 'No Due date');
         newTask.dueDate = document.getElementById('tduedate').value;
         
         if (document.querySelector('.btm > .important-svg').classList.contains('add-importance'))
