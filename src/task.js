@@ -41,7 +41,9 @@ export default function(name, details, dueDate)
 
     function completeTask()
     {
-
+        completeTasksArray.push(this);
+        this.nodeRef = null;
+        this.deleteTask();
     }
 
     function makeTask()
@@ -85,4 +87,8 @@ export function getTaskFromNode(nodeRef){
             return tasksArray[i];
         }
     }
+};
+
+export function getNumberOfCompleteTasks(){
+    return completeTasksArray.length;
 };

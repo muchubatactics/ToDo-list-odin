@@ -5,6 +5,7 @@ body {
     margin: 0px;
     padding: 0px;
     /* overflow-y: hidden ; */
+    user-select: none;
 
 }
 
@@ -282,6 +283,7 @@ svg {
     border-top: 1px solid gray;
     padding-top: 5px;
     width: 70%;
+    user-select: none;
 }
 
 .complete > .top {
@@ -451,4 +453,8 @@ svg {
 
 .deadline-soon {
     border: 1px solid red;
+}
+
+.complete-task > svg {
+    fill: green;
 }
