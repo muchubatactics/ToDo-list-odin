@@ -341,6 +341,7 @@ let domMethods = function(){
     function completeTaskDOM(taskNode)
     {
         let tempTaskRef = getTaskFromNode(taskNode);
+        if (!tempTaskRef) return;
         
         let temp = document.createElement('div');
         temp.classList.add('complete-task');
