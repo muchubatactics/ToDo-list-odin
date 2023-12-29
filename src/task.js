@@ -3,6 +3,7 @@ let completeTasksArray = [];
 
 import { deleteTaskFromLists } from "./list";
 import { addTaskToList } from "./list";
+import storage from './storage.js'
 
 export default function(name, details, dueDate)
 {
@@ -29,23 +30,27 @@ export default function(name, details, dueDate)
         }
         deleteTaskFromLists(this.name, this.listName);
         tasksArray.splice(tasksArray.indexOf(this), 1);
+        storage.deleteT(this);
     }
 
     function makeImportant()
     {
         this.important = true;
         addTaskToList(this, 'Important');
+        storage.updateTaskStorage(this);
     }
 
     function removeImportance()
     {
         this.important = false;
         deleteTaskFromLists(this.name, 'Important');
+        storage.updateTaskStorage(this);
     }
 
     function completeTask()
     {
         completeTasksArray.push(Completed(this.name));
+        storage.addCompleteTaskStorage(this.name);
         this.nodeRef = null;
         this.deleteTask();
     }
@@ -80,6 +85,7 @@ export default function(name, details, dueDate)
         important: false,
         removeImportance,
         getFormattedDate,
+        ID: null,
     };
 }
 
@@ -96,3 +102,8 @@ export function getTaskFromNode(nodeRef){
 export function getNumberOfCompleteTasks(){
     return completeTasksArray.length;
 };
+
+export function addCompleteFromStorage(task)
+{
+    completeTasksArray.push(task);
+}

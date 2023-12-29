@@ -77,6 +77,8 @@ export function addTaskToList(task, listName)
         if (lists[i].name == listName)
         {
             lists[i].tasks.push(task);
+            return true;
         }
     }
+    return false;
 }

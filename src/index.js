@@ -4,9 +4,11 @@ import List from './list.js';
 import Task from './task.js'
 import { selectList } from './list.js';
 import { getSelectedList } from './list.js';
-import { getTaskFromNode } from './task.js';
+import task, { getTaskFromNode } from './task.js';
 import { addTaskToList } from './list.js';
 import { getNumberOfCompleteTasks } from './task.js';
+import storage from './storage.js';
+import { addCompleteFromStorage } from './task.js';
 
 // ---dom
 
@@ -40,6 +42,8 @@ let listFunctionality = function(){
 
     createListButton.onclick = function(){
         createListDiv.removeAttribute('hidden');
+        document.querySelector(".create-list form input").focus();
+
     };
     createListSubmit.addEventListener("click", (event) => {
         event.preventDefault();
@@ -77,6 +81,11 @@ let listFunctionality = function(){
 
 let domMethods = function(){
     let defaultList = null;
+
+    function getDefaultList()
+    {
+        return defaultList;
+    }
 
     function makeListDOM(list)
     {
@@ -128,6 +137,7 @@ let domMethods = function(){
         task.nodeRef = newTask;
         taskFunctionality.completeDiv.before(newTask);
         taskFunctionality.makeTaskListeners();
+
     }
 
     function makeImportantList(list)
@@ -159,9 +169,54 @@ let domMethods = function(){
         defaultList = List('My Tasks');
         defaultList.makeList();
         domMethods.makeListDOM(defaultList);
+        //
+        //
+        //
+        //
+        if(!localStorage.length)
+        {
+            storage.initStorage();
+        }
 
-        selectListDOM(defaultList);
-        return defaultList;
+        if(localStorage.length > 1)
+        {
+            storage.setID();
+            
+            let tempResult = storage.getTasksFromStorage();
+    
+            tempResult.taskArray.forEach((task) => {
+                if(task.important) addTaskToList(task, 'Important');
+    
+                if(task.listName == defaultList.name) addTaskToList(task, defaultList.name);
+                else
+                {
+                    if(!addTaskToList(task, task.listName))
+                    {
+                        let newList = List(task.listName);
+                        newList.makeList();
+                        domMethods.makeListDOM(newList);
+                        addTaskToList(task, task.listName);
+                    }
+                }
+    
+                task.makeTask();
+            });
+
+            tempResult.completeArray.forEach((comtask) => {
+                console.log(comtask)
+                addCompleteTasksFromStorageToDOM(comtask.name);
+                addCompleteFromStorage(comtask);
+            });
+            updateCompleteTaskNumberDOM();
+    
+            selectListDOM(defaultList);
+            renderTasksFromSelectedList();
+
+        }
+        else
+        {
+            selectListDOM(defaultList);
+        }
     }
 
     function updateCompleteTaskNumberDOM()
@@ -333,6 +388,15 @@ let domMethods = function(){
         document.querySelector('.complete .midd').appendChild(temp);
     }
 
+    function addCompleteTasksFromStorageToDOM(name)
+    {
+        let temp = document.createElement('div');
+        temp.classList.add('complete-task');
+        temp.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>
+        <div class="complete-title">${name}</div>`;
+        document.querySelector('.complete .midd').appendChild(temp);
+    }
+
     function markImportantTaskDOM(button)
     {
         button.innerHTML = `<path d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"/>`;
@@ -408,13 +472,10 @@ let domMethods = function(){
         markImportantTaskDOM, 
         deleteTaskDOM,
         removeImportanceDOM, 
-        defaultList,
         completeTaskDOM,
+        getDefaultList,
     };
 }();
-
-domMethods.defaultList = domMethods.initialize();
-
 
 //tasks
 
@@ -430,6 +491,7 @@ let taskFunctionality = function(){
         {
             createTaskDiv.removeAttribute('hidden');
             window.scrollTo(0, document.body.scrollHeight);
+            document.getElementById('tnam').focus();
             if(getSelectedList().name == 'Important')
             {
                 domMethods.markImportantTaskDOM(document.querySelector('.btm .important-svg'));
@@ -455,8 +517,8 @@ let taskFunctionality = function(){
 
         if(getSelectedList().name == 'Important')
         {
-            addTaskToList(newTask, domMethods.defaultList.name);
-            newTask.listName = domMethods.defaultList.name;
+            addTaskToList(newTask, domMethods.getDefaultList().name);
+            newTask.listName = domMethods.getDefaultList().name;
         }
         else
         {
@@ -466,6 +528,7 @@ let taskFunctionality = function(){
         
         newTask.makeTask();
         domMethods.makeTaskDOM(newTask);
+        storage.addToStorage(newTask);
 
 
         //
@@ -597,6 +660,5 @@ let taskFunctionality = function(){
     };
 }();
 
-
-
+domMethods.initialize();
 //tasks done
