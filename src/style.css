@@ -452,7 +452,7 @@ svg {
 }
 
 .deadline-soon {
-    border: 1px solid red;
+    border: 1px solid green;
 }
 
 .complete-task > svg {

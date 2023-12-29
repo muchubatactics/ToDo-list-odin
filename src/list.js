@@ -2,11 +2,7 @@ let lists = [];
 
 function Task(name)
 {
-    function addTask()
-    {
-    
-    }
-    
+
     function makeList()
     {
         lists.push(this);

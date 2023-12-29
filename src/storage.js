@@ -63,7 +63,6 @@ let x = function(){
             if(key == 'ID') continue;
             if(/^c\d/.test(key))
             {
-                console.log(key);
                 completeArray.push({
                     name: `${localStorage.getItem(key)}`,
                 });

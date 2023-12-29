@@ -12,15 +12,6 @@ export default function(name, details, dueDate)
         return {name};
     }
 
-    function expandTask()
-    {
-
-    }
-
-    function minimizeTask()
-    {
-        
-    }
 
     function deleteTask()
     {
