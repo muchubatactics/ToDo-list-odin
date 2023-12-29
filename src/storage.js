@@ -80,13 +80,35 @@ let x = function(){
                 {
                     let newTask = taskx('', '', '');
                     newTask.ID = sID;
-                    newTask[temp['input'].slice(0, -1)] = tempVal;
+                    if (sID > 9)
+                    {
+                        newTask[temp['input'].slice(0, -2)] = tempVal;
+                    }
+                    if (sID > 99)
+                    {
+                        newTask[temp['input'].slice(0, -3)] = tempVal;
+                    }
+                    else
+                    {
+                        newTask[temp['input'].slice(0, -1)] = tempVal;
+                    }
                     taskArray.push(newTask);
                     refArr.push(sID);
                 }
                 else
                 {
-                    taskArray[refIndex][temp['input'].slice(0, -1)] = tempVal;
+                    if (sID > 9)
+                    {
+                        taskArray[refIndex][temp['input'].slice(0, -2)] = tempVal;
+                    }
+                    if (sID > 99)
+                    {
+                        taskArray[refIndex][temp['input'].slice(0, -3)] = tempVal;
+                    }
+                    else
+                    {
+                        taskArray[refIndex][temp['input'].slice(0, -1)] = tempVal;
+                    }
                 }
             }
         }
